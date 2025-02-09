@@ -1,7 +1,7 @@
 let gameSeq = [];
 let playerSeq = [];
 let score = 0;
-let gameOn = [];
+let gameOn = false;
 
 const Colors = {
     'Uleft': 'red',
@@ -21,11 +21,15 @@ Object.keys(quadrants).forEach(key => {
     quadrants[key].addEventListener('click', () => ClickHandler(key));
 })
 
+function updateScore() {
+    document.querySelector('.center').innerHTML = `${score}`;
+}
+
 function startGame () {
     gameSeq = [];
     playerSeq = [];
     score = 0;
-    gameStarted = true;
+    gameOn = true;
     nextRound();
 }
 
@@ -33,7 +37,7 @@ function nextRound () {
     const quadKeys = Object.keys(Colors);
     const Algo = quadKeys[Math.floor(Math.random()*quadKeys.length)];
     gameSeq.push(Algo);
-    playerSequence();
+    playSequence();
     
 }
 
@@ -45,7 +49,7 @@ function flash (quadrant) {
     }, 500);
 }
 
-function playerSequence () {
+function playSequence () {
     gameOn = false;
 
     flash(gameSeq[gameSeq.length - 1]);
@@ -58,7 +62,7 @@ function playerSequence () {
 
 function checkPlayerInput () {
     for (let i = 0 ; i < playerSeq.length; i++) {
-        if (playerSeq !== gameSeq) {
+        if (playerSeq[i] !== gameSeq[i]) {
             return false;
         }
     }
@@ -72,11 +76,15 @@ function ClickHandler (quadrant) {
     playerSeq.push(quadrant);
 
     if(checkPlayerInput()) {
+        if (playerSeq.length === gameSeq.length) {  
             score++;
+            updateScore()
             setTimeout(nextRound, 1000);
+            }
+        
     } 
     else{
-        endGame;
+        endGame();
     }
 }
 
@@ -84,3 +92,5 @@ function endGame () {
     alert(`Game Over! Your Score: ${score}`);
     gameOn = false;
 }
+
+updateScore()

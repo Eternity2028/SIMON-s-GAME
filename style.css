@@ -124,5 +124,12 @@ main{
 }
 
 
+.Uleft.active,
+.Uright.active,
+.Dleft.active,
+.Dright.active {
+    filter: brightness(160%);
+    transition: all 0.2s ease;
+}
 
 
